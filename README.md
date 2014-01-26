@@ -1,6 +1,6 @@
 # mean-auth
 
-This project is used as a starting pointing for bootstrapping MEAN applications with authentication. HTTP requests are validated using JSON Web Tokens (JWT).
+This project is used as a starting point for bootstrapping MEAN (MongoDB, ExpressJS, AngularJS, NodeJS) applications with authentication. HTTP requests are validated using JSON Web Tokens (JWT).
 
 ## Usage
 
