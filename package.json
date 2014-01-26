@@ -1,0 +1,25 @@
+{
+  "name": "mean-auth",
+  "description":"Boilerplate application for MEAN application development.",
+  "author":"Jonathan Broquist",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "3.1.x",
+    "express-jwt": "*",
+    "jsonwebtoken": "*",
+    "connect-mongodb": "*",
+    "q": "*",
+    "path": "*",
+    "passport": "*",
+    "passport-local": "*",
+    "passport-forcedotcom": "*",
+    "passport-google":"*",
+    "mongoose":"*",
+    "bcrypt":"*",
+    "request":"*"
+  },
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.2.x"
+  }
+}
