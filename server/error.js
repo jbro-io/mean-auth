@@ -2,7 +2,10 @@
 //================================================================================
 // Module
 //================================================================================
-module.exports = {
-	mongoUri: process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/dialer',
-	secret: process.env.JWT_SECRET || 'mysupersecret'
+module.exports = function(err, req, res, next) {
+    console.log('--global error:', err);
+    var errorResponse = {
+        error: err
+    };
+    res.send(errorResponse);
 };

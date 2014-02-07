@@ -1,9 +1,9 @@
+'use strict';
 //-------------------------------------------------------------------------
 // Libraries
 //-------------------------------------------------------------------------
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var passport = require('passport');
 var bcrypt = require('bcrypt');
 
 //-------------------------------------------------------------------------
@@ -39,7 +39,7 @@ var UserSchema = new Schema({
 //-------------------------------------------------------------------------
 // Methods
 //-------------------------------------------------------------------------
-UserSchema.methods.setPassword = function(password, done){
+UserSchema.methods.setPassword = function(password, done) {
 	var self = this;
 	bcrypt.genSalt(10, function(err, salt){
 		bcrypt.hash(password, salt, function(err, hash){
@@ -48,19 +48,19 @@ UserSchema.methods.setPassword = function(password, done){
 			done(self);
 		});
 	});
-}
+};
 
-UserSchema.method('verifyPassword', function(password, callback){
+UserSchema.method('verifyPassword', function(password, callback) {
 	bcrypt.compare(password, this.hash, callback);
-})
+});
 
-UserSchema.static('authenticate', function(email, password, callback){
+UserSchema.static('authenticateLocal', function(email, password, callback) {
 	//lookup user by email
-	this.findOne({email:email}, '+salt +hash', function(err, user){
+	this.findOne({email:email}, '+salt +hash', function(err, user) {
 		if(err) return callback(err);
 		if(!user) return callback(null, false);
 
-		user.verifyPassword(password, function(err, passwordCorrect){
+		user.verifyPassword(password, function(err, passwordCorrect) {
 			if(err) return callback(err);
 			if(!passwordCorrect) return callback(null, false);
 
@@ -69,18 +69,18 @@ UserSchema.static('authenticate', function(email, password, callback){
 				if(err) return callback(err);
 				return callback(null, user);
 			});
-		})
-	})
-})
+		});
+	});
+});
 
-UserSchema.static('authenticateGoogle', function(identifier, profile, callback){
-	this.findOne({provider: 'google', email: identifier}, function(err, user){
+UserSchema.static('authenticateGoogle', function(identifier, profile, callback) {
+	this.findOne({provider: 'google', email: identifier}, function(err, user) {
 		if(err) return callback(err);
 		if(!user) return callback(null, false);
 
 		return callback(null, user);
-	})
-})
+	});
+});
 
 //-------------------------------------------------------------------------
 // Module

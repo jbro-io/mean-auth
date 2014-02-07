@@ -1,7 +1,7 @@
+'use strict';
 //-------------------------------------------------------------------------
 // Libraries
 //-------------------------------------------------------------------------
-var db = require('../db-connector');
 var passport = require('passport');
 var jwt = require('jsonwebtoken');
 var config = require('../config');
@@ -15,7 +15,7 @@ var localStrategy = new LocalStrategy({
         usernameField: 'email'
     },
     function (email, password, done){
-        User.authenticate(email, password, function(err, user){
+        User.authenticateLocal(email, password, function(err, user) {
             return done(err, user);
         });
     }
@@ -27,7 +27,7 @@ passport.use(localStrategy);
 //-------------------------------------------------------------------------
 function getSignedToken(user){
 	//remove salt and hash properties from user object to sign
-	var user = user.toObject();
+	user = user.toObject();
 	if(user.salt) delete user.salt;
 	if(user.hash) delete user.hash;
 
@@ -36,7 +36,7 @@ function getSignedToken(user){
 	var token = jwt.sign(user, config.secret, { expiresInMinutes: expiresMins });
 	var now = new Date();
 	var expiration = new Date(now.getTime() + (1000 * 60 * expiresMins));
-	
+
 	return { token: token, expiration: expiration };
 }
 
@@ -44,19 +44,21 @@ function getSignedToken(user){
 // Module
 //-------------------------------------------------------------------------
 module.exports = {
-	local: function(request, response, next){
+	local: function(req, res, next){
 		//authenticate request with passport
-		passport.authenticate('local', function(error, user, info){
-			if(error) next(error);
-			if(!user) return response.send(401, 'Invalid credentials.');
-			
+		passport.authenticate('local', function(error, user, info) {
+			if(error) {
+                next(error);
+            } else if(!user) {
+                return res.send(401, 'Invalid credentials.');
+            }
+
 			//send signed token upon successful login
-			response.send(200, getSignedToken(user));
-		})(request, response, next);
+			res.send(200, getSignedToken(user));
+		})(req, res, next);
 	},
-	logout: function(request, response){
-		console.log('user:', request.user);
-		
-			
+	logout: function(req, res){
+		console.log('user:', req.user);
+        res.send(200);
 	}
-}
+};
