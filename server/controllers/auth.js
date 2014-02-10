@@ -21,7 +21,7 @@ var localStrategy = new LocalStrategy({
     }
 );
 passport.use(localStrategy);
-
+//--------------------------------------------------------------------------------
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var googleStrategy = new GoogleStrategy({
         clientID: config.google.clientId,
@@ -31,14 +31,61 @@ var googleStrategy = new GoogleStrategy({
     },
     function(accessToken, refreshToken, profile, done) {
         console.log('Google Profile:', profile);
-        User.authenticateGoogle(accessToken, refreshToken, profile._json, function(err, user) {
+        User.authenticateOAuth(accessToken, refreshToken, profile._json, function(err, user) {
             return done(err, user);
         });
     }
 );
 passport.use(googleStrategy);
-
-
+//--------------------------------------------------------------------------------
+var SalesforceStrategy = require('passport-forcedotcom').Strategy;
+var salesforceStrategy = new SalesforceStrategy({
+        clientID: config.salesforce.clientId,
+        clientSecret: config.salesforce.clientSecret,
+        callbackURL: 'http://localhost:7000/auth/salesforce/callback',
+        scope: ['id']
+    },
+    function(accessToken, refreshToken, profile, done) {
+        console.log('Salesforce Profile:', profile);
+        User.authenticateOAuth(accessToken, refreshToken, profile, function(err, user) {
+            return done(err, user);
+        });
+    }
+);
+// passport.use(salesforceStrategy);
+//--------------------------------------------------------------------------------
+// var TwitterStrategy = require('passport-twitter').Strategy;
+// var twitterStrategy = new TwitterStrategy({
+//         consumerKey: config.twitter.apiKey,
+//         consumerSecret: config.twitter.apiSecret,
+//         callbackURL: 'http://localhost:7000/auth/twitter/callback'
+//     },
+//     function(accessToken, tokenSecret, profile, done) {
+//         console.log('Twitter Access Token:', accessToken);
+//         console.log('Twitter Token Secret:', tokenSecret);
+//         console.log('Twitter Profile:', profile);
+//         User.authenticateOAuth(accessToken, tokenSecret, profile, function(err, user) {
+//             return done(err, user);
+//         });
+//     }
+// );
+// passport.use(twitterStrategy);
+//--------------------------------------------------------------------------------
+var GithubStrategy = require('passport-github').Strategy;
+var githubStrategy = new GithubStrategy({
+        clientID: config.github.clientId,
+        clientSecret: config.github.clientSecret,
+        callbackURL: 'http://localhost:7000/auth/github/callback'
+    },
+    function(accessToken, refreshToken, profile, done) {
+        console.log('Github Profile:', profile);
+        User.authenticateOAuth(accessToken, refreshToken, profile._json, function(err, user) {
+            return done(err, user);
+        });
+    }
+);
+passport.use(githubStrategy);
+//--------------------------------------------------------------------------------
 passport.serializeUser(function (user, done){
     done(null, user.id);
 });
@@ -78,6 +125,24 @@ module.exports = {
 	},
     google: function(req, res, next) {
         passport.authenticate('google', function(err, user) {
+            if(err) return next(err);
+            if(!user) return res.send(401, 'User record not found.');
+
+            res.cookie('token', getSignedToken(user));
+            res.redirect('/');
+        })(req, res, next);
+    },
+    salesforce: function(req, res, next) {
+        passport.authenticate('forcedotcom', function(err, user) {
+            if(err) return next(err);
+            if(!user) return res.send(401, 'User record not found.');
+
+            res.cookie('token', getSignedToken(user));
+            res.redirect('/');
+        })(req, res, next);
+    },
+    github: function(req, res, next) {
+        passport.authenticate('github', function(err, user) {
             if(err) return next(err);
             if(!user) return res.send(401, 'User record not found.');
 

@@ -15,10 +15,14 @@ module.exports = function(app) {
 	//AUTHENTICATION
 	app.get('/logout', AuthController.logout);
 	app.post('/login', AuthController.local);
-	// app.get('/auth/salesforce', passport.authenticate('forcedotcom'));
-	// app.get('/auth/salesforce/callback', AuthController.salesforce);
 	app.get('/auth/google', passport.authenticate('google'));
 	app.get('/auth/google/callback', AuthController.google);
+	app.get('/auth/salesforce', passport.authenticate('forcedotcom'));
+	app.get('/auth/salesforce/callback', AuthController.salesforce);
+	// app.get('/auth/twitter', passport.authenticate('twitter'));
+	// app.get('/auth/twitter/callback', AuthController.twitter);
+	app.get('/auth/github', passport.authenticate('github'));
+	app.get('/auth/github/callback', AuthController.github);
 
 	//USER MANAGEMENT
 	app.post('/register', UserController.register);

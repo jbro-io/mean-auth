@@ -1,7 +1,11 @@
 {
   "name": "mean-auth",
   "version": "0.0.1",
-  "author": "Jonathan Broquist",
+  "author": {
+    "name": "Jonathan Broquist",
+    "email": "jonnybro@gmail.com",
+    "url": "http://www.jbro.io"
+  },
   "description": "Boilerplate application for MEAN application development.",
   "homepage": "https://github.com/jbroquist/mean-auth",
   "license": "MIT",

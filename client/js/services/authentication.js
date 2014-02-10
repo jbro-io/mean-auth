@@ -101,7 +101,7 @@ angular.module('authentication', [])
 	};
 }])
 
-.controller('LoginController', ['$scope','$log','$timeout','$window','Auth','$modal', function($scope, $log, $timeout, $window, Auth, $modal) {
+.controller('LoginController', ['$scope','$log','$timeout','$window','Auth', function($scope, $log, $timeout, $window, Auth) {
 
 	$scope.user = {
 		email: 'jonnybro@gmail.com',
@@ -141,20 +141,12 @@ angular.module('authentication', [])
 			url: '/auth/google'
 		},
 		{
-			name: 'Salesforce',
-			url: '/auth/salesforce'
-		},
-		{
-			name: 'Twitter',
-			url: '/auth/twitter'
-		},
-		{
-			name: 'Facebook',
-			url: '/auth/facebook'
-		},
-		{
 			name: 'Github',
 			url: '/auth/github'
+		},
+		{
+			name: 'Salesforce',
+			url: '/auth/salesforce'
 		}
 	];
 

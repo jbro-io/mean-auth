@@ -76,7 +76,7 @@ UserSchema.static('authenticate', function(email, password, callback) {
 	});
 });
 
-UserSchema.static('authenticateGoogle', function(accessToken, refreshToken, profile, callback) {
+UserSchema.static('authenticateOAuth', function(accessToken, refreshToken, profile, callback) {
 	//TODO: save refresh token
 	this.findOne({email: profile.email}, function(err, user) {
 		if(err) return callback(err);

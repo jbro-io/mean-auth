@@ -1,7 +1,11 @@
 {
   "name": "mean-auth",
   "version": "0.0.1",
-  "author": "Jonathan Broquist",
+  "author": {
+    "name": "Jonathan Broquist",
+    "email": "jonnybro@gmail.com",
+    "url": "http://www.jbro.io"
+  },
   "description": "Boilerplate application for MEAN application development.",
   "scripts": {
     "start": "node server.js",
@@ -16,11 +20,13 @@
     "path": "~0.4.9",
     "passport": "~0.2.0",
     "passport-local": "~0.1.6",
-    "passport-forcedotcom": "0.0.3",
     "mongoose": "~3.8.5",
     "bcrypt": "~0.7.7",
     "request": "~2.33.0",
-    "passport-google-oauth": "~0.1.5"
+    "passport-google-oauth": "~0.1.5",
+    "passport-forcedotcom": "0.0.3",
+    "passport-twitter": "~1.0.2",
+    "passport-github": "~0.1.5"
   },
   "engines": {
     "node": "0.10.x",
