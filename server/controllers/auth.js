@@ -52,7 +52,7 @@ var salesforceStrategy = new SalesforceStrategy({
         });
     }
 );
-// passport.use(salesforceStrategy);
+passport.use(salesforceStrategy);
 //--------------------------------------------------------------------------------
 // var TwitterStrategy = require('passport-twitter').Strategy;
 // var twitterStrategy = new TwitterStrategy({
@@ -99,14 +99,13 @@ passport.deserializeUser(function (id, done){
 // Functions
 //================================================================================
 function getSignedToken(user) {
-	//remove salt and hash properties from user object to sign so they aren't
-    //returned with the token
-	user = user.toObject();
+	//remove salt and hash properties from user object to sign so they aren't returned with the token
+	if(typeof user.toObject === 'function') user = user.toObject();
 	if(user.salt) delete user.salt;
 	if(user.hash) delete user.hash;
 
 	//instantiate token to sign
-	return jwt.sign(user, config.secret, { expiresInMinutes: 1 });
+	return jwt.sign(user, config.secret, { expiresInMinutes: 30 });
 }
 
 //================================================================================
@@ -152,7 +151,20 @@ module.exports = {
     },
 	logout: function(req, res) {
 		console.log('user:', req.user);
-        res.clearCookie('auth');
+        res.clearCookie('token');
         res.send(200);
-	}
+	},
+    slidingRefresh: function(req, res, next) {
+        if(req.isAuthenticated()) {
+            var utcExp = req.user.exp;
+            var exp = new Date(utcExp * 1000);
+            var now = new Date();
+
+            if(now.getTime() < exp.getTime()) {
+                res.cookie('token', getSignedToken(req.user));
+            }
+        }
+
+        return next();
+    }
 };

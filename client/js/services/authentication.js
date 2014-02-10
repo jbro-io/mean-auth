@@ -34,7 +34,6 @@ angular.module('authentication', [])
 				var now = new Date();
 				var expiration = new Date(user.exp * 1000); //convert unix timestamp to milliseconds
 				var isExpired = (expiration.getTime() <= now.getTime()) ? true : false;
-				$log.info('isExpired:', isExpired);
 				$log.debug(expiration, now);
 
 				return (isExpired) ? false : true;

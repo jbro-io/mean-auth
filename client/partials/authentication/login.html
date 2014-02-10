@@ -1,4 +1,4 @@
-<div class="container" style="max-width:330px; margin:0 auto;">
+<div class="container well" style="max-width:330px; margin:0 auto;">
 	<form role="form">
 		<div class="alert" ng-class="message.className" ng-show="message">{{ message.text }}</div>
 		<div class="form-group">
@@ -9,16 +9,16 @@
 			<label for="exampleInputPassword1">Password</label>
 			<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" ng-model="user.password">
 		</div>
-		<div class="btn-group">
-			<button type="submit" class="btn btn-primary" ng-click="login()">Sign In</button>
-			<a class="btn btn-primary dropdown-toggle">
-				<span class="caret"></span>
-			</a>
-			<ul class="dropdown-menu">
-				<li ng-repeat="provider in loginWith">
-					<a href="{{provider.url}}">{{provider.name}}</a>
-				</li>
-			</ul>
-		</div>
+			<div class="btn-group">
+				<button type="submit" class="btn btn-primary btn-lg" ng-click="login()">Sign In</button>
+				<a class="btn btn-primary btn-lg dropdown-toggle">
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu">
+					<li ng-repeat="provider in loginWith">
+						<a href="{{provider.url}}">{{provider.name}}</a>
+					</li>
+				</ul>
+			</div>
 	</form>
 </div>

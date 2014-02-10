@@ -29,7 +29,8 @@ module.exports = function(app) {
 
 	//API
 	app.all('/api/*', jwt({secret:config.secret})); //ensure all api routes are protected
-	app.get('/api/test', function(request, response){
+	app.all('/api/*', AuthController.slidingRefresh); //automatically refreshes the JWT if the user is authenticated
+	app.get('/api/test', function(request, response) {
 		response.send(200, 'Success!');
 	});
 
