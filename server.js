@@ -2,13 +2,13 @@
 //================================================================================
 // Libraries
 //================================================================================
-var express = require('express');
-var path    = require('path');
-var passport = require('passport');
-var cors = require('./server/controllers/cors');
+var express            = require('express');
+var path               = require('path');
+var passport           = require('passport');
+var cors               = require('./server/controllers/cors');
 var globalErrorHandler = require('./server/error');
-var routes = require('./server/routes');
-var db = require('./server/db');
+var routes             = require('./server/routes');
+var db                 = require('./server/db');
 
 //================================================================================
 // Properties
@@ -34,17 +34,20 @@ app.configure('production', function() {
 //================================================================================
 // Middleware
 //================================================================================
-app.use(cors());
-app.use(express.compress());
-app.use(express.bodyParser());
-app.use(express.methodOverride());
-app.use(passport.initialize());
-app.use(app.router);
+app.use(cors());                    //CORS implementation
+app.use(express.compress());        //Compress response data with gzip / deflate. This middleware should be placed "high" within the stack to ensure all responses may be compressed.
+app.use(express.bodyParser());      //Request body parsing middleware supporting JSON, urlencoded, and multipart requests. This middleware is simply a wrapper for the json(), urlencoded(), and multipart() middleware.
+app.use(express.methodOverride());  //Faux HTTP method support. Use if you want to simulate DELETE/PUT
+app.use(passport.initialize());     //initializes passport
+app.use(app.router);                //application routes
+app.use(globalErrorHandler);        //handles all unresolved errors from the next() method
+//serve up static files (html, js, css, etc.)
 app.use(express.static(path.join(__dirname, 'client')));
-app.use(globalErrorHandler);
+
+//TODO: add middleware to renew token
 
 //================================================================================
-// Server
+// Initialization
 //================================================================================
 db.startup();
 routes(app);

@@ -2,3 +2,5 @@ DS_Store
 node_modules
 bin
 .jshintrc
+client/bower_components/
+server/config.js

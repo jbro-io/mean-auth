@@ -1,14 +1,14 @@
 'use strict';
-//-------------------------------------------------------------------------
+//================================================================================
 // Libraries
-//-------------------------------------------------------------------------
+//================================================================================
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var bcrypt = require('bcrypt');
+var Schema   = mongoose.Schema;
+var bcrypt   = require('bcrypt');
 
-//-------------------------------------------------------------------------
+//================================================================================
 // Schema Definition
-//-------------------------------------------------------------------------
+//================================================================================
 var UserSchema = new Schema({
 	name: {
 		first: { type:String, required: false },
@@ -22,7 +22,7 @@ var UserSchema = new Schema({
 	},
 	google: {
 		id: { type:String },
-		token: { type:String }
+		refreshToken: { type:String }
 	},
 	salesforce: {
 		id: { type:String },
@@ -36,9 +36,9 @@ var UserSchema = new Schema({
 	hash: { type:String, required: false, select: false }
 });
 
-//-------------------------------------------------------------------------
-// Methods
-//-------------------------------------------------------------------------
+//================================================================================
+// Instance Methods
+//================================================================================
 UserSchema.methods.setPassword = function(password, done) {
 	var self = this;
 	bcrypt.genSalt(10, function(err, salt){
@@ -54,7 +54,10 @@ UserSchema.method('verifyPassword', function(password, callback) {
 	bcrypt.compare(password, this.hash, callback);
 });
 
-UserSchema.static('authenticateLocal', function(email, password, callback) {
+//================================================================================
+// Static Methods
+//================================================================================
+UserSchema.static('authenticate', function(email, password, callback) {
 	//lookup user by email
 	this.findOne({email:email}, '+salt +hash', function(err, user) {
 		if(err) return callback(err);
@@ -73,8 +76,9 @@ UserSchema.static('authenticateLocal', function(email, password, callback) {
 	});
 });
 
-UserSchema.static('authenticateGoogle', function(identifier, profile, callback) {
-	this.findOne({provider: 'google', email: identifier}, function(err, user) {
+UserSchema.static('authenticateGoogle', function(accessToken, refreshToken, profile, callback) {
+	//TODO: save refresh token
+	this.findOne({email: profile.email}, function(err, user) {
 		if(err) return callback(err);
 		if(!user) return callback(null, false);
 
@@ -82,7 +86,7 @@ UserSchema.static('authenticateGoogle', function(identifier, profile, callback) 
 	});
 });
 
-//-------------------------------------------------------------------------
+//================================================================================
 // Module
-//-------------------------------------------------------------------------
+//================================================================================
 module.exports = mongoose.model('User', UserSchema);

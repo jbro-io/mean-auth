@@ -1,4 +1,4 @@
-<div style="width: 400px; margin-left:auto; margin-right:auto;">
+<div class="container" style="max-width:330px; margin:0 auto;">
 	<form role="form">
 		<div class="alert" ng-class="message.className" ng-show="message">{{ message.text }}</div>
 		<div class="form-group">
@@ -10,7 +10,17 @@
 			<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" ng-model="user.password">
 		</div>
 		<button type="submit" class="btn btn-default" ng-click="login()">Login</button>
-		<button type="submit" class="btn btn-default" ng-click="loginWithGoogle()">Login With Google</button>
+
+		<div class="btn-group">
+			<button type="submit" class="btn btn-primary" ng-click="loginWithOAuth()">Sign In</button>
+			<a class="btn btn-primary dropdown-toggle">
+				<span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu">
+				<li ng-repeat="provider in loginWith">
+					<a href="{{provider.url}}">{{provider.name}}</a>
+				</li>
+			</ul>
+		</div>
 	</form>
 </div>
-	

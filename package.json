@@ -17,10 +17,10 @@
     "passport": "~0.2.0",
     "passport-local": "~0.1.6",
     "passport-forcedotcom": "0.0.3",
-    "passport-google": "~0.3.0",
     "mongoose": "~3.8.5",
     "bcrypt": "~0.7.7",
-    "request": "~2.33.0"
+    "request": "~2.33.0",
+    "passport-google-oauth": "~0.1.5"
   },
   "engines": {
     "node": "0.10.x",
@@ -43,6 +43,7 @@
     "karma-coffee-preprocessor": "~0.1.2",
     "karma": "~0.10.9",
     "karma-coverage": "~0.1.5",
-    "grunt-open": "~0.2.3"
+    "grunt-open": "~0.2.3",
+    "grunt-npm2bower-sync": "~0.3.0"
   }
 }

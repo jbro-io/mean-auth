@@ -56,6 +56,16 @@ module.exports = function(grunt) {
 			phantom_coverage: {
 				path: './bin/coverage/PhantomJS 1.9.7 (Mac OS X)/index.html'
 			}
+		},
+		sync: {
+			all: {
+				options: {
+					//sync specific options
+					sync: ['name', 'version', 'author', 'private', 'description'],
+					from: './package.json',
+					to: './bower.json'
+				}
+			}
 		}
 	});
 
@@ -64,6 +74,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('grunt-jasmine-node');
 	grunt.loadNpmTasks('grunt-open');
+	grunt.loadNpmTasks('grunt-npm2bower-sync');
 
 	//define grunt tasks
 	grunt.registerTask('test', ['karma:unit_auto', 'watch']);
@@ -76,6 +87,6 @@ module.exports = function(grunt) {
 		var server = require('./server.js');
 		this.async();
 	});
-	
-	grunt.registerTask('default', 'server');
+
+	grunt.registerTask('default', ['sync','server']);
 };
