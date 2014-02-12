@@ -36,7 +36,7 @@ app.configure('production', function() {
 //================================================================================
 // Middleware
 //================================================================================
-app.use(cors());                                            //CORS implementation
+// app.use(cors());                                            //CORS implementation
 app.use(express.compress());                                //Compress response data with gzip / deflate. This middleware should be placed "high" within the stack to ensure all responses may be compressed.
 app.use(express.bodyParser());                              //Request body parsing middleware supporting JSON, urlencoded, and multipart requests. This middleware is simply a wrapper for the json(), urlencoded(), and multipart() middleware.
 app.use(express.methodOverride());                          //Faux HTTP method support. Use if you want to simulate DELETE/PUT

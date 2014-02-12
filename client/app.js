@@ -3,6 +3,7 @@
 var app = angular.module('app', [
 	'ngRoute',
     'ngCookies',
+    'ui.router',
     'ui.bootstrap',
     'authentication'
 ])
@@ -15,10 +16,9 @@ var app = angular.module('app', [
     $routeProvider.when('/', {templateUrl: 'partials/main.html', controller: 'MainController'});
     $routeProvider.otherwise({redirectTo: '/register'});
 
-    $httpProvider.defaults.useXDomain = true;
-
-    //remove the x-requested-with header that angular adds by default for xhr requests
-    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    //CORS
+    // $httpProvider.defaults.useXDomain = true; //sets IE to use XDomainRequest instead of XHR
+    // delete $httpProvider.defaults.headers.common['X-Requested-With'];
 }])
 
 ;

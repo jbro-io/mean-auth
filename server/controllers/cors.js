@@ -3,7 +3,7 @@
 // Properties
 //================================================================================
 var defaults = {
-    domains: [],
+    domains: ['*'],
     methods: 'GET,HEAD,PUT,POST,DELETE,OPTIONS',
     headers: 'Content-Type, Authorization, Content-Length, X-Requested-With'
 };
@@ -14,7 +14,7 @@ var defaults = {
 function cors(options, req, res, next) {
     var allowedDomains = options.domains;
 
-    if(allowedDomains === '*' || allowedDomains.indexOf(req.headers.origin) !== -1) {
+    if(allowedDomains.indexOf('*') !== -1 || allowedDomains.indexOf(req.headers.origin) !== -1) {
         res.header('Access-Control-Allow-Origin', req.headers.origin);
         res.header('Access-Control-Allow-Methods', options.methods);
         res.header('Access-Control-Allow-Headers', options.headers);
