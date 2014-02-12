@@ -1,4 +1,5 @@
 <div class="container well" style="max-width:330px; margin:0 auto;">
+	<alert type="error.type" ng-show="error">{{error.message}}</alert>
 	<form role="form">
 		<div class="alert" ng-class="message.className" ng-show="message">{{ message.text }}</div>
 		<div class="form-group">

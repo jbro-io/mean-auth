@@ -8,7 +8,7 @@
  * is not applied correctly. The remedy is simple, just add the following styling
  * to your application:
  * ------------------------------------------------------------------------- */
-.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+.nav, .pagination, .carousel, .panel-title, .dropdown-menu a { cursor: pointer; }
 
 
 

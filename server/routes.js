@@ -33,5 +33,4 @@ module.exports = function(app) {
 	app.get('/api/test', function(request, response) {
 		response.send(200, 'Success!');
 	});
-
 };

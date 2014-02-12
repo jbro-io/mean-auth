@@ -107,33 +107,6 @@ angular.module('authentication', [])
 		password: '1234'
 	};
 
-	// function addMessage(type, text){
-
-	// 	var className;
-
-	// 	switch(type){
-	// 		case 'success':
-	// 			className = 'alert-success';
-	// 			break;
-	// 		case 'error':
-	// 			className = 'alert-danger';
-	// 			break;
-	// 		case 'warning':
-	// 			className = 'alert-warning';
-	// 			break;
-	// 		default :
-	// 			className = 'alert-info';
-	// 			break;
-	// 	}
-
-	// 	$timeout(function(){
-	// 		$scope.message = {
-	// 			className: className,
-	// 			text: text
-	// 		};
-	// 	});
-	// }
-
 	$scope.loginWith = [
 		{
 			name: 'Google',
@@ -153,6 +126,11 @@ angular.module('authentication', [])
 		Auth.login($scope.user).then(function() {
 			$log.debug('Authenticated:', Auth.isAuthenticated());
 			//TODO: display error message on invalid login
+		}, function(error) {
+			$scope.error = {
+				type: 'danger',
+				message: error.data.message || error.data
+			};
 		});
 	};
 }])

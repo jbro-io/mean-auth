@@ -8,7 +8,7 @@ var config   = require('../config');
 var User     = require('../models/User');
 
 //================================================================================
-// Passport
+// Passport Strategies
 //================================================================================
 var LocalStrategy = require('passport-local').Strategy;
 var localStrategy = new LocalStrategy({
@@ -26,7 +26,7 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var googleStrategy = new GoogleStrategy({
         clientID: config.google.clientId,
         clientSecret: config.google.clientSecret,
-        callbackURL: 'http://localhost:7000/auth/google/callback',
+        callbackURL: config.google.callbackURL,
         scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email'
     },
     function(accessToken, refreshToken, profile, done) {
@@ -37,22 +37,6 @@ var googleStrategy = new GoogleStrategy({
     }
 );
 passport.use(googleStrategy);
-//--------------------------------------------------------------------------------
-var SalesforceStrategy = require('passport-forcedotcom').Strategy;
-var salesforceStrategy = new SalesforceStrategy({
-        clientID: config.salesforce.clientId,
-        clientSecret: config.salesforce.clientSecret,
-        callbackURL: 'http://localhost:7000/auth/salesforce/callback',
-        scope: ['id']
-    },
-    function(accessToken, refreshToken, profile, done) {
-        console.log('Salesforce Profile:', profile);
-        User.authenticateOAuth(accessToken, refreshToken, profile, function(err, user) {
-            return done(err, user);
-        });
-    }
-);
-passport.use(salesforceStrategy);
 //--------------------------------------------------------------------------------
 // var TwitterStrategy = require('passport-twitter').Strategy;
 // var twitterStrategy = new TwitterStrategy({
@@ -75,7 +59,7 @@ var GithubStrategy = require('passport-github').Strategy;
 var githubStrategy = new GithubStrategy({
         clientID: config.github.clientId,
         clientSecret: config.github.clientSecret,
-        callbackURL: 'http://localhost:7000/auth/github/callback'
+        callbackURL: config.github.callbackURL
     },
     function(accessToken, refreshToken, profile, done) {
         console.log('Github Profile:', profile);
@@ -86,14 +70,22 @@ var githubStrategy = new GithubStrategy({
 );
 passport.use(githubStrategy);
 //--------------------------------------------------------------------------------
-passport.serializeUser(function (user, done){
-    done(null, user.id);
-});
-passport.deserializeUser(function (id, done){
-    User.findById(id, function (err, user){
-        done(err, user);
-    });
-});
+var SalesforceStrategy = require('passport-forcedotcom').Strategy;
+var salesforceStrategy = new SalesforceStrategy({
+        clientID: config.salesforce.clientId,
+        clientSecret: config.salesforce.clientSecret,
+        callbackURL: config.salesforce.callbackURL,
+        authorizationURL: config.salesforce.authorizationURL,
+        tokenURL: config.salesforce.tokenURL
+    },
+    function(accessToken, refreshToken, profile, done) {
+        console.log('Salesforce Profile:', profile);
+        User.authenticateOAuth(accessToken, refreshToken, profile, function(err, user) {
+            return done(err, user);
+        });
+    }
+);
+passport.use(salesforceStrategy);
 
 //================================================================================
 // Functions
